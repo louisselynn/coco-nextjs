@@ -56,7 +56,7 @@ const workSans = localFont({
 
 export const metadata: Metadata = {
   title: "CoCo Shop",
-  description: "Shop the lastest fashion",
+  description: "Shop the latest fashion",
 };
 
 export default function RootLayout({
