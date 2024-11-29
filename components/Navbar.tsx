@@ -40,7 +40,7 @@ const Navbar = async () => {
                   />
                   <AvatarFallback>AV</AvatarFallback>
                 </Avatar>
-              </Link>npm
+              </Link>
 
             </>
           ) : (
