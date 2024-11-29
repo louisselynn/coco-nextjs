@@ -12,8 +12,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     }),
   ],
   callbacks: {
-    async signIn({ profile }) {
-      const { email, name, picture, sub } = profile;
+    async signIn({ user, account, profile }) {
+      const { email, name, picture, sub } = profile as {
+        email: string;
+        name: string;
+        picture: string;
+        sub: string;
+      };
+
       const username = email.split("@")[0];
 
       const existingUser = await client.fetch(AUTHOR_BY_GOOGLE_SUB_QUERY, { id: sub });
@@ -27,21 +33,29 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           username,
           image: picture,
           bio: "",
-        })
+        });
       }
 
       return true;
     },
-  },
   async jwt({token, account, profile}) {
     if (account && profile) {
-      const user = await client.fetch(AUTHOR_BY_GOOGLE_SUB_QUERY, {id: profile.sub});
+      const user = await client.withConfig({useCdn: false}).fetch(AUTHOR_BY_GOOGLE_SUB_QUERY, {id: profile.sub});
 
       if (!user) {
         token.id = profile.sub;
+      } else {
+      token.id = user.id;
       }
+    }
 
       return token;
     }
+  },
+  async session({session, token}) {
+
+    session.user.id = token.id;
+
+    return session;
   }
 });
