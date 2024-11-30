@@ -10,6 +10,7 @@ import {formSchema} from "@/lib/validation";
 import {z} from "zod";
 import {useToast} from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
+import {createPitch} from "@/lib/actions";
 
 
 const StartupForm = () => {
@@ -30,18 +31,19 @@ const StartupForm = () => {
             }
             await formSchema.parseAsync(formValues);
 
-            console.log("form values: ", formValues);
-            // const result = await createIdea(prevState, formData, pitch);
 
-            // if (result.status === 'SUCCESS') {
-            //     toast({
-            //         title: 'Success',
-            //         description: "Successfully created a starup pitch",
-            //         variant: 'destructive'
-            //     });
-            //     router.push(`/startup/${result.id}`);
-            //
-            // }
+            const result = await createPitch(prevState, formData, pitch);
+
+            if (result.status === 'SUCCESS') {
+                toast({
+                    title: 'Success',
+                    description: "Successfully created a startup pitch",
+                    variant: 'destructive'
+                });
+                console.log(result);
+                router.push(`/startup/${result._id}`);
+
+            }
         } catch (error) {
             if (error instanceof z.ZodError) {
                 const fieldErrors = error.flatten().fieldErrors;
@@ -149,7 +151,7 @@ const StartupForm = () => {
                     height={300}
                     style={{ borderRadius: 20, overflow: "hidden"}}
                     textareaProps={{
-                        placeholder: "Briefly descrive your idea and what problem it solves"
+                        placeholder: "Briefly describe your idea and what problem it solves"
                     }}
                     previewOptions={{disallowedElements:["style"]}}
                 />
