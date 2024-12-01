@@ -18,7 +18,7 @@ const StartupCard = ({post} : {post: StartupTypeCard}) => {
         </p>
         <div className='flex gap-1.5'>
           <EyeIcon className='size-6 text-primary'/>
-          <span className='text-16-medium'>{post.views}</span>
+          <span className='text-16-medium'>{views}</span>
         </div>
       </div>
       <div className='flex-between mt-5 gap5'>
@@ -31,14 +31,14 @@ const StartupCard = ({post} : {post: StartupTypeCard}) => {
           </Link>
         </div>
         <Link href={`/user/${author?._id}`}>
-					<Image src="https://placeholder.co/48x48" alt="placeholder" width={48} height={48} className='rounded-full' />
+					<Image src={author?.image} alt={author?.name} width={48} height={48} className='rounded-full' />
         </Link>
       </div>
 			<Link href= {`/startup/${_id}`}>
 				<p className='startup-card_desc'>
 					{description}
 				</p>
-				<img src={image} alt="placeholder" className='startup-card_img' />
+				<img src={image} alt="description" className='startup-card_img' />
 			</Link>
 
 			<div className='flex-between gap-3 mt-5'>
