@@ -42,20 +42,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     if (account && profile) {
       const user = await client.withConfig({useCdn: false}).fetch(AUTHOR_BY_GOOGLE_SUB_QUERY, {id: profile.sub});
 
-      if (!user) {
-        token.id = profile.sub;
-      } else {
-      token.id = user.id;
-      }
+      token.id = user?._id;
     }
 
-      return token;
-    }
+    return token;
   },
-  async session({session, token}) {
-
-    session.user.id = token.id;
-
-    return session;
-  }
+    async session({ session, token }) {
+      Object.assign(session, { id: token.id });
+      return session;
+    },
+  },
 });
